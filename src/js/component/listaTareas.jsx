@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useId } from "react";
+import React, { useId, useState } from "react";
+import { GrClose } from "react-icons/gr";
+import { GiNotebook } from "react-icons/gi";
 
 const ListaTareas = () => {
   const [tareas, setTareas] = useState([]);
@@ -10,14 +11,19 @@ const ListaTareas = () => {
     setValueInput(event.target.value);
   };
 
-  // controlar el envio de formulario
+  // controlar el envio de formulario y agregar la tarea
   const handleSubmit = (event) => {
     event.preventDefault();
+
     setTareas([...tareas, valueInput]);
     setValueInput("");
   };
-  //Agregar tarea
 
+  // eliminar la tarea seleccionada
+  const deleteTask = (index) => {
+    const tareaActualizada = tareas.filter((tarea, index) => index !== index);
+    setTareas(tareaActualizada);
+  };
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -28,10 +34,16 @@ const ListaTareas = () => {
           onChange={changeValueInput}
         ></input>
       </form>
-      <h1>Lista de tareas</h1>
+
+      <h1>
+        Lista de tareas <GiNotebook />
+      </h1>
       <ul>
         {tareas.map((tarea, index) => (
-          <li key={index}>{tarea}</li>
+          <li key={index}>
+            {tarea}
+            <GrClose onClick={() => deleteTask(index)} />
+          </li>
         ))}
       </ul>
     </div>
