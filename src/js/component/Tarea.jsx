@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
-const Tarea = ({ deleteTask, tarea, index }) => {
+const Tarea = ({ deleteTask, dato, index }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ const Tarea = ({ deleteTask, tarea, index }) => {
       onMouseLeave={() => setIsHover(false)}
       className="d-flex justify-content-between"
     >
-      {tarea}
+      {dato.label}
       {isHover && <GrClose onClick={() => deleteTask(index)} />}
     </div>
   );

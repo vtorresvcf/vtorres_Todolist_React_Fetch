@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { GiNotebook } from "react-icons/gi";
 import Formulario from "./Formulario";
 import Tarea from "./Tarea";
+import { peticionApiPost } from "./functionsFetch";
 
 const ListaTareas = () => {
   const [tareas, setTareas] = useState([]);
   const [valueInput, setValueInput] = useState("");
+  const [data, setData] = useState("");
 
   // Registra el valor del input
   const changeValueInput = (event) => {
@@ -17,7 +19,7 @@ const ListaTareas = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (valueInput.length > 0) {
-      setTareas([...tareas, valueInput]);
+      peticionApiPost(valueInput);
       setValueInput("");
     }
   };
@@ -27,6 +29,20 @@ const ListaTareas = () => {
     const tareaActualizada = tareas.filter((tarea, index) => index !== index);
     setTareas(tareaActualizada);
   };
+
+  useEffect(() => {
+    fetch("https://playground.4geeks.com/todo/users/vtorres")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Hay un error en la peticion");
+        }
+
+        return response.json();
+      })
+      .then((data) => setData(data.todos))
+      .catch((error) => console.log("Error", error));
+  }, [valueInput]);
+
   return (
     <div className="container shadow p-3 mb-5 bg-white rounded">
       <h1 className="text-center">
@@ -39,11 +55,11 @@ const ListaTareas = () => {
         valueInput={valueInput}
       />
 
-      {tareas.length > 0 ? (
+      {data.length > 0 ? (
         <>
-          {tareas.map((tarea, index) => (
+          {data.map((dato, index) => (
             <li className="list-group-item lista" key={index}>
-              <Tarea deleteTask={deleteTask} tarea={tarea} />
+              <Tarea deleteTask={deleteTask} dato={dato} />
             </li>
           ))}
         </>
@@ -51,7 +67,7 @@ const ListaTareas = () => {
         <li className="list-group-item lista text-danger">No hay tareas</li>
       )}
       <div className="total-tareas">
-        <span>Nº de tareas : {tareas.length}</span>
+        <span>Nº de tareas : {data.length}</span>
       </div>
     </div>
   );
