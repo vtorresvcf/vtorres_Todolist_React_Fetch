@@ -16,9 +16,10 @@ const ListaTareas = () => {
   // controlar el envio de formulario y agregar la tarea
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    setTareas([...tareas, valueInput]);
-    setValueInput("");
+    if (valueInput.length > 0) {
+      setTareas([...tareas, valueInput]);
+      setValueInput("");
+    }
   };
 
   // eliminar la tarea seleccionada
@@ -27,11 +28,11 @@ const ListaTareas = () => {
     setTareas(tareaActualizada);
   };
   return (
-    <div className="container">
-      <h1>
+    <div className="container shadow p-3 mb-5 bg-white rounded">
+      <h1 className="text-center">
         Lista de tareas <GiNotebook />
       </h1>
-
+      <ul className="list-group list-group-flush "></ul>
       <Formulario
         handleSubmit={handleSubmit}
         changeValueInput={changeValueInput}
@@ -39,16 +40,19 @@ const ListaTareas = () => {
       />
 
       {tareas.length > 0 ? (
-        <ul className="list-group list-group-flush">
+        <>
           {tareas.map((tarea, index) => (
-            <li className="list-group-item" key={index}>
+            <li className="list-group-item lista" key={index}>
               <Tarea deleteTask={deleteTask} tarea={tarea} />
             </li>
           ))}
-        </ul>
+        </>
       ) : (
-        <h2>No hay tareas</h2>
+        <li className="list-group-item lista text-danger">No hay tareas</li>
       )}
+      <div className="total-tareas">
+        <span>Nº de tareas : {tareas.length}</span>
+      </div>
     </div>
   );
 };

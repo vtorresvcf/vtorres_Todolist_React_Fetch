@@ -8,6 +8,7 @@ const Tarea = ({ deleteTask, tarea, index }) => {
     <div
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      className="d-flex justify-content-between"
     >
       {tarea}
       {isHover && <GrClose onClick={() => deleteTask(index)} />}
