@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Formulario = ({
-  addTarea,
-  valueInput,
-  setValueInput,
-  changeValueInput,
-}) => {
-  // Registra el envío del formulario
-
-  return <div></div>;
+const Formulario = ({ handleSubmit, valueInput, changeValueInput }) => {
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Escriba"
+          value={valueInput}
+          onChange={changeValueInput}
+        ></input>
+      </form>
+    </div>
+  );
 };
 
 export default Formulario;
