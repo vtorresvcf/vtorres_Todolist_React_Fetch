@@ -6,9 +6,9 @@ import Tarea from "./Tarea";
 import { peticionApiPost } from "./functionsFetch";
 
 const ListaTareas = () => {
-  const [tareas, setTareas] = useState([]);
   const [valueInput, setValueInput] = useState("");
   const [data, setData] = useState("");
+  const [idDelete, setIdDelete] = useState("");
 
   // Registra el valor del input
   const changeValueInput = (event) => {
@@ -25,9 +25,28 @@ const ListaTareas = () => {
   };
 
   // eliminar la tarea seleccionada
-  const deleteTask = (index) => {
-    const tareaActualizada = tareas.filter((tarea, index) => index !== index);
-    setTareas(tareaActualizada);
+  const deleteTask = (id) => {
+    console.log(id);
+    //peticionApiDelete(id);
+  };
+
+  // Eliminar tarea fetch
+
+  const peticionApiDelete = async (dato) => {
+    const response = fetch(
+      `https://playground.4geeks.com/todo/users/vtorres/todos/${dato.id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.ok) {
+      console.log("eliminado correctamente");
+      //const idFilter = data.filter((dato) => dato.id !== id);
+      //console.log(idFilter);
+      //setData(idFilter);
+    } else {
+      console.error("Error al eliminar el producto:", response.statusText);
+    }
   };
 
   useEffect(() => {
@@ -57,8 +76,8 @@ const ListaTareas = () => {
 
       {data.length > 0 ? (
         <>
-          {data.map((dato, index) => (
-            <li className="list-group-item lista" key={index}>
+          {data.map((dato) => (
+            <li className="list-group-item lista" key={dato.id}>
               <Tarea deleteTask={deleteTask} dato={dato} />
             </li>
           ))}
