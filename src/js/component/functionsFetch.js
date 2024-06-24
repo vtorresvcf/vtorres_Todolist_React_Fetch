@@ -12,3 +12,17 @@ export const peticionApiPost = (texto) => {
     console.log(data);
   });
 };
+
+export const crearUser = async (name) => {
+  await fetch(`https://playground.4geeks.com/todo/users/${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+    }),
+  }).then((data) => {
+    console.log(data);
+  });
+};

@@ -27,6 +27,8 @@
 }
 
 .total-tareas {
+  display: flex;
+  justify-content: space-around;
   color: rgb(139, 134, 134);
   margin-top: 1rem;
 }

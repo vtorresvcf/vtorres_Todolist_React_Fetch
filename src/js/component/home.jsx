@@ -1,5 +1,5 @@
 import React from "react";
-import ListaTareas from "./ListaTareas";
+import ListaTareas from "./listaTareas";
 
 //create your first component
 const Home = () => {

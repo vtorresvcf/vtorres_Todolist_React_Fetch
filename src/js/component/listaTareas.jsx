@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { GiNotebook } from "react-icons/gi";
 import Formulario from "./Formulario";
 import Tarea from "./Tarea";
-import { peticionApiPost } from "./functionsFetch";
+import { peticionApiPost, crearUser } from "./functionsFetch";
 
 const ListaTareas = () => {
   const [valueInput, setValueInput] = useState("");
   const [data, setData] = useState("");
-  const [idDelete, setIdDelete] = useState("");
+  const [user, setUser] = useState("vtorres");
 
   // Registra el valor del input
   const changeValueInput = (event) => {
@@ -24,33 +24,45 @@ const ListaTareas = () => {
     }
   };
 
-  // eliminar la tarea seleccionada
-  const deleteTask = (id) => {
-    console.log(id);
-    //peticionApiDelete(id);
+  const deleteTarea = async (id) => {
+    await fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.status === 200) {
+        setData(
+          data.filter((tarea) => {
+            return tarea.id !== id;
+          })
+        );
+      } else {
+        return;
+      }
+    });
   };
 
-  // Eliminar tarea fetch
-
-  const peticionApiDelete = async (dato) => {
-    const response = fetch(
-      `https://playground.4geeks.com/todo/users/vtorres/todos/${dato.id}`,
-      {
-        method: "DELETE",
+  const deleteUser = async (user) => {
+    await fetch(`https://playground.4geeks.com/todo/users/${user}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.status === 200) {
+        crearUser(user);
+      } else {
+        return;
       }
-    );
-    if (response.ok) {
-      console.log("eliminado correctamente");
-      //const idFilter = data.filter((dato) => dato.id !== id);
-      //console.log(idFilter);
-      //setData(idFilter);
-    } else {
-      console.error("Error al eliminar el producto:", response.statusText);
-    }
+    });
+  };
+
+  // eliminar la tarea seleccionada
+  const deleteTask = (id) => {
+    deleteTarea(id);
   };
 
   useEffect(() => {
-    fetch("https://playground.4geeks.com/todo/users/vtorres")
+    // creo usuario llamado vtorres
+    //crearUser(user);
+
+    //llamada get
+    fetch(`https://playground.4geeks.com/todo/users/${user}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Hay un error en la peticion");
@@ -60,7 +72,7 @@ const ListaTareas = () => {
       })
       .then((data) => setData(data.todos))
       .catch((error) => console.log("Error", error));
-  }, [valueInput]);
+  }, [data]);
 
   return (
     <div className="container shadow p-3 mb-5 bg-white rounded">
